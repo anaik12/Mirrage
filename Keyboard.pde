@@ -1,4 +1,7 @@
-class Keyboard {
+import java.awt.*;
+
+
+class Keyboard{
 
   String[] keyboardRow1 = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "BACK"};
   String[] keyboardRow2 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "ENTER"};
@@ -7,19 +10,28 @@ class Keyboard {
   String[] keyboardRow5 = {"!", "@", "#", "$", "%", "&", "*", "(", ")", "/", "+", "- ", "="};
   String[][] keyMinMaxMapping = {{"A", "40", "70"}, {"S", "80", "70"}};
   StringBuffer letter = new StringBuffer();
+  StringBuffer finalletter = new StringBuffer();
+  
   String alphabet = "";
   boolean CAPSLOCK = false;
   int count =0;
+  int currentTranslateX = 0;
+  int currentTranslateY = 0;
+  
+  //boolean closeKeyboard = false;
+
   void setup() {
     size(600, 420);
     noStroke();
     background(0);
     textSize(25);
     println("KeyBoard Setup");
-    
+    //noLoop();
   }
 
-  void draw1(int translateX, int translateY) { 
+  void display(int translateX, int translateY) { 
+    currentTranslateX = translateX;
+    currentTranslateY = translateY;
     translate(translateX, translateY);
     int x =0;
     int y=65; 
@@ -97,63 +109,92 @@ class Keyboard {
       fill(0);
       text(keyboardRow5[i], x+4, 205);
     }
+    //draw exit button
+    stroke(0);
+    fill(255);
+    rect(570, 20, 30, 30);
+    fill(0);
+    text("x", 577, 45);
+
+    //text handling box
     stroke(255);
     rect(20, 250, 550, 70, 10);
     if (letter != null) {
       fill(255);
       text(letter.toString(), 20, 290);
     }
-    println(count);
+    //println(count);
     count++;
+    
+    //mouseReleased();
   }
-  
+
 
 
   void mousePressed() {
-
-    if (mouseY > 40 && mouseY <= 70 ) {
+     println(mouseX + " " +mouseY);
+    if (mouseY > currentTranslateY + 40 && mouseY <= currentTranslateY + 70 ) {
       println("Key Pressed in row 1");
       checkForFirstRow();
-    } else  if (mouseY > 75 && mouseY <= 105 ) {
+    } else  if (mouseY > currentTranslateY + 75 && mouseY <= currentTranslateY + 105 ) {
       checkForSecondRow();
-    } else  if (mouseY > 110 && mouseY <= 140 ) {
+    } else  if (mouseY > currentTranslateY + 110 && mouseY <= currentTranslateY + 140 ) {
       checkForThirdRow();
-    } else  if (mouseY > 145 && mouseY <= 175 ) {
+    } else  if (mouseY > currentTranslateY + 145 && mouseY <= currentTranslateY + 175 ) {
       checkForFourthRow();
-    } else  if (mouseY > 180 && mouseY <= 210 ) {
+    } else  if (mouseY > currentTranslateY + 180 && mouseY <= currentTranslateY + 210 ) {
       checkForFifthRow();
-    }
-    redraw();
+    } else if (mouseY > currentTranslateY + 20 && mouseY <= currentTranslateY + 50 && 
+      mouseX > currentTranslateX + 570 && mouseX <= currentTranslateX + 600) {
+        println("exit pressed");
+        Mirrage.keyboardActivate = false;
+      }
+    //redraw();
+  }
+  
+  void destroyKeyBoard(){
+    //currentTranslateX = translateX;
+    //currentTranslateY = translateY;
+    translate(currentTranslateX, currentTranslateY);
+    noStroke();
+  fill(128,128,128);
+    rect(20, 20, 600, 310);
+    //setup();
+  }
+  
+  void stop(){
+    exit();
   }
 
   void checkForFirstRow() {
-    if (mouseX > 40 && mouseX <= 70) letter.append("1");
-    if (mouseX > 80 && mouseX <= 110) letter.append("2");
-    if (mouseX > 120 && mouseX <= 150) letter.append("3");
-    if (mouseX > 160 && mouseX <= 190) letter.append("4");
-    if (mouseX > 200 && mouseX <= 230) letter.append("5");
-    if (mouseX > 240 && mouseX <= 270) letter.append("6");
-    if (mouseX > 280 && mouseX <= 310) letter.append("7");
-    if (mouseX > 320 && mouseX <= 350) letter.append("8");
-    if (mouseX > 360 && mouseX <= 390) letter.append("9");
-    if (mouseX > 400 && mouseX <= 430) letter.append("0");
-    if (mouseX > 440 && mouseX <= 530) {
+    if (mouseX >= currentTranslateX + 40 && mouseX <= currentTranslateX + 70) letter.append("1");
+    if (mouseX >= currentTranslateX + 80 && mouseX <= currentTranslateX + 110) letter.append("2");
+    if (mouseX >= currentTranslateX + 120 && mouseX <= currentTranslateX + 150) letter.append("3");
+    if (mouseX >= currentTranslateX + 160 && mouseX <= currentTranslateX + 190) letter.append("4");
+    if (mouseX >= currentTranslateX + 200 && mouseX <= currentTranslateX + 230) letter.append("5");
+    if (mouseX >= currentTranslateX + 240 && mouseX <= currentTranslateX + 270) letter.append("6");
+    if (mouseX >= currentTranslateX + 280 && mouseX <= currentTranslateX + 310) letter.append("7");
+    if (mouseX >= currentTranslateX + 320 && mouseX <= currentTranslateX + 350) letter.append("8");
+    if (mouseX >= currentTranslateX + 360 && mouseX <= currentTranslateX + 390) letter.append("9");
+    if (mouseX >= currentTranslateX + 400 && mouseX <= currentTranslateX + 430) letter.append("0");
+    if (mouseX >= currentTranslateX + 440 && mouseX <= currentTranslateX + 530) {
       if (letter.capacity() != 0) letter.deleteCharAt(letter.length()-1);
     }
   }
 
   void checkForSecondRow() {
-    if (mouseX > 40 && mouseX <= 70) alphabet = "Q";
-    if (mouseX > 80 && mouseX <= 110) alphabet = "W";
-    if (mouseX > 120 && mouseX <= 150) alphabet = "E";
-    if (mouseX > 160 && mouseX <= 190) alphabet = "R";
-    if (mouseX > 200 && mouseX <= 230) alphabet = "T";
-    if (mouseX > 240 && mouseX <= 270) alphabet = "Y";
-    if (mouseX > 280 && mouseX <= 310) alphabet = "U";
-    if (mouseX > 320 && mouseX <= 350) alphabet = "I";
-    if (mouseX > 360 && mouseX <= 390) alphabet = "O";
-    if (mouseX > 400 && mouseX <= 430) alphabet = "P";
-    if (mouseX > 440 && mouseX <= 530) {
+    if (mouseX > currentTranslateX + 40 && mouseX <= currentTranslateX + 70) alphabet = "Q";
+    if (mouseX > currentTranslateX + 80 && mouseX <= currentTranslateX + 110) alphabet = "W";
+    if (mouseX > currentTranslateX + 120 && mouseX <= currentTranslateX + 150) alphabet = "E";
+    if (mouseX > currentTranslateX + 160 && mouseX <= currentTranslateX + 190) alphabet = "R";
+    if (mouseX > currentTranslateX + 200 && mouseX <= currentTranslateX + 230) alphabet = "T";
+    if (mouseX > currentTranslateX + 240 && mouseX <= currentTranslateX + 270) alphabet = "Y";
+    if (mouseX > currentTranslateX + 280 && mouseX <= currentTranslateX + 310) alphabet = "U";
+    if (mouseX > currentTranslateX + 320 && mouseX <= currentTranslateX + 350) alphabet = "I";
+    if (mouseX > currentTranslateX + 360 && mouseX <= currentTranslateX + 390) alphabet = "O";
+    if (mouseX > currentTranslateX + 400 && mouseX <= currentTranslateX + 430) alphabet = "P";
+    if (mouseX > currentTranslateX + 440 && mouseX <= currentTranslateX + 530) {
+      finalletter = letter;
     }
     convertToLowerCase();
     letter.append(alphabet);
@@ -161,17 +202,17 @@ class Keyboard {
 
   void checkForThirdRow() {
     boolean INCAPSLOCK = false;
-    if (mouseX > 40 && mouseX <= 70) alphabet = "A";
-    if (mouseX > 80 && mouseX <= 110) alphabet = "S";
-    if (mouseX > 120 && mouseX <= 150) alphabet = "D";
-    if (mouseX > 160 && mouseX <= 190) alphabet = "F";
-    if (mouseX > 200 && mouseX <= 230) alphabet = "5";
-    if (mouseX > 240 && mouseX <= 270) alphabet = "G";
-    if (mouseX > 280 && mouseX <= 310) alphabet = "H";
-    if (mouseX > 320 && mouseX <= 350) alphabet = "J";
-    if (mouseX > 360 && mouseX <= 390) alphabet = "K";
-    if (mouseX > 400 && mouseX <= 430) alphabet = "L";
-    if (mouseX > 440 && mouseX <= 530) {
+    if (mouseX >= currentTranslateX + 40 && mouseX <= currentTranslateX + 70) alphabet = "A";
+    if (mouseX >= currentTranslateX + 80 && mouseX <= currentTranslateX + 110) alphabet = "S";
+    if (mouseX >= currentTranslateX + 120 && mouseX <= currentTranslateX + 150) alphabet = "D";
+    if (mouseX >= currentTranslateX + 160 && mouseX <= currentTranslateX + 190) alphabet = "F";
+    if (mouseX >= currentTranslateX + 200 && mouseX <= currentTranslateX + 230) alphabet = "G";
+    if (mouseX >= currentTranslateX + 240 && mouseX <= currentTranslateX + 270) alphabet = "H";
+    if (mouseX >= currentTranslateX + 280 && mouseX <= currentTranslateX + 310) alphabet = "J";
+    if (mouseX >= currentTranslateX + 320 && mouseX <= currentTranslateX + 350) alphabet = "K";
+    if (mouseX >= currentTranslateX + 360 && mouseX <= currentTranslateX + 390) alphabet = "L";
+    //if (mouseX >= currentTranslateX + 400 && mouseX <= currentTranslateX + 430) alphabet = "L";
+    if (mouseX >= currentTranslateX + 400 && mouseX <= currentTranslateX + 530) {
       CAPSLOCK = !CAPSLOCK;
       fill(0, 255, 0);
       INCAPSLOCK = true;
@@ -183,41 +224,40 @@ class Keyboard {
   }
 
   void checkForFourthRow() {
-    if (mouseX > 40 && mouseX <= 70) alphabet = "Z";
-    if (mouseX > 80 && mouseX <= 110) alphabet = "X";
-    if (mouseX > 120 && mouseX <= 150) alphabet = "C";
-    if (mouseX > 160 && mouseX <= 190) alphabet = "V";
-    if (mouseX > 200 && mouseX <= 230) alphabet = "B";
-    if (mouseX > 240 && mouseX <= 270) alphabet = "N";
-    if (mouseX > 280 && mouseX <= 310) alphabet = "M";
-    if (mouseX > 320 && mouseX <= 350) alphabet = ",";
-    if (mouseX > 360 && mouseX <= 390) alphabet = ".";
-    if (mouseX > 400 && mouseX <= 430) alphabet = "?";
-    if (mouseX > 440 && mouseX <= 530) alphabet = " ";
+    if (mouseX >= currentTranslateX + 40 && mouseX <= currentTranslateX + 70) alphabet = "Z";
+    if (mouseX >= currentTranslateX + 80 && mouseX <= currentTranslateX + 110) alphabet = "X";
+    if (mouseX >= currentTranslateX + 120 && mouseX <= currentTranslateX + 150) alphabet = "C";
+    if (mouseX >= currentTranslateX + 160 && mouseX <= currentTranslateX + 190) alphabet = "V";
+    if (mouseX >= currentTranslateX + 200 && mouseX <= currentTranslateX + 230) alphabet = "B";
+    if (mouseX >= currentTranslateX + 240 && mouseX <= currentTranslateX + 270) alphabet = "N";
+    if (mouseX >= currentTranslateX + 280 && mouseX <= currentTranslateX + 310) alphabet = "M";
+    if (mouseX >= currentTranslateX + 320 && mouseX <= currentTranslateX + 350) alphabet = ",";
+    if (mouseX >= currentTranslateX + 360 && mouseX <= currentTranslateX + 390) alphabet = ".";
+    if (mouseX >= currentTranslateX + 400 && mouseX <= currentTranslateX + 430) alphabet = "?";
+    if (mouseX >= currentTranslateX + 440 && mouseX <= currentTranslateX + 530) alphabet = " ";
     convertToLowerCase();
     letter.append(alphabet);
   }
 
   void checkForFifthRow() {
-    if (mouseX > 40 && mouseX <= 70) letter.append("!");
-    if (mouseX > 80 && mouseX <= 110) letter.append("@");
-    if (mouseX > 120 && mouseX <= 150) letter.append("#");
-    if (mouseX > 160 && mouseX <= 190) letter.append("$");
-    if (mouseX > 200 && mouseX <= 230) letter.append("%");
-    if (mouseX > 240 && mouseX <= 270) letter.append("&");
-    if (mouseX > 280 && mouseX <= 310) letter.append("*");
-    if (mouseX > 320 && mouseX <= 350) letter.append("(");
-    if (mouseX > 360 && mouseX <= 390) letter.append(")");
-    if (mouseX > 400 && mouseX <= 430) letter.append("/");
-    if (mouseX > 440 && mouseX <= 470) letter.append("+");
-    if (mouseX > 480 && mouseX <= 510) letter.append("-");
-    if (mouseX > 520 && mouseX <= 540) letter.append("=");
+    if (mouseX >= currentTranslateX + 40 && mouseX <= currentTranslateX + 70) letter.append("!");
+    if (mouseX >= currentTranslateX + 80 && mouseX <= currentTranslateX + 110) letter.append("@");
+    if (mouseX >= currentTranslateX + 120 && mouseX <= currentTranslateX + 150) letter.append("#");
+    if (mouseX >= currentTranslateX + 160 && mouseX <= currentTranslateX + 190) letter.append("$");
+    if (mouseX >= currentTranslateX + 200 && mouseX <= currentTranslateX + 230) letter.append("%");
+    if (mouseX >= currentTranslateX + 240 && mouseX <= currentTranslateX + 270) letter.append("&");
+    if (mouseX >= currentTranslateX + 280 && mouseX <= currentTranslateX + 310) letter.append("*");
+    if (mouseX >= currentTranslateX + 320 && mouseX <= currentTranslateX + 350) letter.append("(");
+    if (mouseX >= currentTranslateX + 360 && mouseX <= currentTranslateX + 390) letter.append(")");
+    if (mouseX >= currentTranslateX + 400 && mouseX <= currentTranslateX + 430) letter.append("/");
+    if (mouseX >= currentTranslateX + 440 && mouseX <= currentTranslateX + 470) letter.append("+");
+    if (mouseX >= currentTranslateX + 480 && mouseX <= currentTranslateX + 510) letter.append("-");
+    if (mouseX >= currentTranslateX + 520 && mouseX <= currentTranslateX + 540) letter.append("=");
   }
 
   void convertToLowerCase() {
     if (!CAPSLOCK) {
       alphabet = alphabet.toLowerCase();
     }
-    
   }
 }
