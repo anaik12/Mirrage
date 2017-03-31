@@ -11,11 +11,8 @@ NewsFeed news = new NewsFeed();
 void setup(){
   size(1600, 1020);
     noStroke();
-    background(128,128.128);
+    background(128,128,128);
     textSize(25);
-    //key.draw(0,0);
-    //key.setup();
-    //key.draw1(0,0);
     
 }
 
@@ -32,8 +29,8 @@ void draw(){
    else {
      key.destroyKeyBoard();
    }
-   news.display();
-   //text(key.finalletter.toString(), 0, 0);
+   //news.display();
+   text(key.finalletter.toString(), 0, 0);
    
 }
 
