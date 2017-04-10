@@ -1,5 +1,7 @@
 
 Keyboard key = new Keyboard();
+Health health = new Health();
+
 
 void setup(){
   size(1200, 1020);
@@ -20,6 +22,7 @@ void draw(){
 
 void mousePressed(){
   key.draw1(0,0);
+  health.drawHealth();
   key.mousePressed();
   redraw();
 }
