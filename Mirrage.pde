@@ -1,4 +1,4 @@
-
+/*
 Keyboard key = new Keyboard();
 Health health = new Health();
 
@@ -26,3 +26,4 @@ void mousePressed(){
   key.mousePressed();
   redraw();
 }
+*/
